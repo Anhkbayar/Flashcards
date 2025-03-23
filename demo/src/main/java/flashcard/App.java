@@ -12,15 +12,23 @@ import flashcard.Organizer.RandomOrganizer;
 import flashcard.Organizer.RecentMistakesFirst;
 
 /**
+ * TODO textnii ungu white bolgoh
+ * TODO help menug yanzlah
+ * TODO start hesegtei bolgoh
+ * 
+ */
+
+
+/**
  * Hello world!
  *
  */
 public class App {
 
-    public static final String ANSI_GREEN = "\\u001B[32m";
-    public static final String ANSI_RED = "\\u001B[31m";
-    public static final String ANSI_RESET = "\\u001B[30m";
-    public static final String ANSI_YELLOW = "\\u001B[33m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[30m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
     private static final String HELP_MESSAGE = """
             Usage: flashcard <cards-file> [options]
             Options:
@@ -35,7 +43,7 @@ public class App {
             System.out.println(HELP_MESSAGE);
         }
 
-        String cardsFile = "cards.txt";
+        String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
         String order = "random";
         int repetitions = 1;
         boolean invertCards = false;
@@ -130,9 +138,9 @@ public class App {
                 System.out.print("Hariult: ");
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
-                    System.out.println(ANSI_GREEN + "Хариулт зөв" + ANSI_RESET);
+                    System.out.println(ANSI_GREEN + "Zuv hariult" + ANSI_RESET);
                 } else {
-                    System.out.println(ANSI_RED + "Буруу хариулт! Зөв хариулт нь: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
+                    System.out.println(ANSI_RED + "Buruu hariult. Zuv hariult ni: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
                     );
                     card.mistakeAdder();
                 }
