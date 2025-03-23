@@ -35,7 +35,7 @@ public class App {
             System.out.println(HELP_MESSAGE);
         }
 
-        String cardsFile = args[0];
+        String cardsFile = "cards.txt";
         String order = "random";
         int repetitions = 1;
         boolean invertCards = false;
@@ -83,7 +83,7 @@ public class App {
             }
         }
 
-        CardOrganizer organizer;
+        CardOrganizer organizer = new RandomOrganizer();
         switch (order) {
             case "random" -> {
                 organizer = new RandomOrganizer();
