@@ -12,10 +12,8 @@ import flashcard.Organizer.RandomOrganizer;
 import flashcard.Organizer.RecentMistakesFirst;
 
 //java -cp target/demo-1.0-SNAPSHOT.jar
-
 /**
- * TODO textnii ungu white bolgoh TODO help menug yanzlah TODO start hesegtei
- * bolgoh
+ * TODO help menug yanzlah bolgoh
  *
  */
 /**
