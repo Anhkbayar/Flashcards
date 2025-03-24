@@ -11,14 +11,13 @@ import flashcard.Organizer.CardOrganizer;
 import flashcard.Organizer.RandomOrganizer;
 import flashcard.Organizer.RecentMistakesFirst;
 
+//java -cp target/demo-1.0-SNAPSHOT.jar
+
 /**
- * TODO textnii ungu white bolgoh
- * TODO help menug yanzlah
- * TODO start hesegtei bolgoh
- * 
+ * TODO textnii ungu white bolgoh TODO help menug yanzlah TODO start hesegtei
+ * bolgoh
+ *
  */
-
-
 /**
  * Hello world!
  *
@@ -27,7 +26,7 @@ public class App {
 
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_RESET = "\u001B[30m";
+    public static final String ANSI_RESET = "\u001B[37m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     private static final String HELP_MESSAGE = """
             Usage: flashcard <cards-file> [options]
@@ -38,75 +37,95 @@ public class App {
               --invertCards               Invert question and answer
             """;
 
+    @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
+        Scanner mainScanner = new Scanner(System.in);
+
         if (args.length == 0 || args[0].equals("--help")) {
             System.out.println(HELP_MESSAGE);
         }
 
-        String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
-        String order = "random";
-        int repetitions = 1;
-        boolean invertCards = false;
+        while (true) {
+            System.out.println("\nType 'start' to begin flashcards or 'quit' to exit");
+            String command = mainScanner.nextLine().trim().toLowerCase();
 
-        for (int i = 1; i < args.length; i++) {
-            switch (args[i]) {
-                case "--order" -> {
-                    if (i + 1 < args.length) {
-                        order = args[i++];
-                    } else {
-                        System.err.println("Error: Missing argument for --order");
-                        return;
-                    }
-                }
-                case "--repetitions" -> {
-                    if (i + 1 < args.length) {
-                        try {
-                            repetitions = Integer.parseInt(args[i++]);
-                        } catch (NumberFormatException e) {
-                            System.err.println("Error: WRONG NUMBER FOOL");
+            if (command.equals("quit")) {
+                System.out.print("Exiting.......");
+                mainScanner.close();
+                break;
+            }
+            if (!command.equals("start")) {
+                System.out.print("Medehgui command bainoo :)");
+                continue;
+            }
+
+            String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
+            String order = "random";
+            int repetitions = 1;
+            boolean invertCards = false;
+
+            for (int i = 1; i < args.length; i++) {
+                switch (args[i]) {
+                    case "--order" -> {
+                        if (i + 1 < args.length) {
+                            order = args[i++];
+                        } else {
+                            System.err.println("Error: Missing argument for --order");
                             return;
                         }
                     }
-                }
-                case "--invertCards" -> {
-                    invertCards = true;
+                    case "--repetitions" -> {
+                        if (i + 1 < args.length) {
+                            try {
+                                repetitions = Integer.parseInt(args[i++]);
+                            } catch (NumberFormatException e) {
+                                System.err.println("Error: WRONG NUMBER FOOL");
+                                return;
+                            }
+                        }
+                    }
+                    case "--invertCards" -> {
+                        invertCards = true;
 
+                    }
+                    default -> {
+                        System.err.println("Error: Evdelchleeshdee " + args[i]);
+                    }
+
+                }
+            }
+
+            List<Card> cards = loadCards(cardsFile);
+            if (cards == null) {
+                return;
+            }
+
+            if (invertCards) {
+                for (Card card : cards) {
+                    String temp = card.getQuestion();
+                    card = new Card(card.getAnswer(), temp);
+                }
+            }
+
+            CardOrganizer organizer = new RandomOrganizer();
+            switch (order) {
+                case "random" -> {
+                    organizer = new RandomOrganizer();
+                }
+                case "recent-mistakes-first" -> {
+                    organizer = new RecentMistakesFirst();
                 }
                 default -> {
-                    System.err.println("Error: Evdelchleeshdee " + args[i]);
+                    System.err.println("Error: Iiim daraalal baihgueeee");
                 }
-
             }
+
+            cards = organizer.organize(cards);
+
+            startFlashCard(cards, repetitions, mainScanner);
         }
 
-        List<Card> cards = loadCards(cardsFile);
-        if (cards == null) {
-            return;
-        }
-
-        if (invertCards) {
-            for (Card card : cards) {
-                String temp = card.getQuestion();
-                card = new Card(card.getAnswer(), temp);
-            }
-        }
-
-        CardOrganizer organizer = new RandomOrganizer();
-        switch (order) {
-            case "random" -> {
-                organizer = new RandomOrganizer();
-            }
-            case "recent-mistakes-first" -> {
-                organizer = new RecentMistakesFirst();
-            }
-            default -> {
-                System.err.println("Error: Iiim daraalal baihgueeee");
-            }
-        }
-
-        cards = organizer.organize(cards);
-
-        startFlashCard(cards, repetitions);
+        mainScanner.close();
     }
 
     private static List<Card> loadCards(String filePath) {
@@ -130,8 +149,7 @@ public class App {
     }
 
     @SuppressWarnings("ConvertToTryWithResources")
-    private static void startFlashCard(List<Card> cards, int repetitions) {
-        Scanner scanner = new Scanner(System.in);
+    private static void startFlashCard(List<Card> cards, int repetitions, Scanner scanner) {
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Asuult: " + card.getQuestion());
@@ -146,7 +164,6 @@ public class App {
                 }
             }
         }
-        scanner.close();
     }
 
 }
