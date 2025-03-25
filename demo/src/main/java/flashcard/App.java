@@ -66,7 +66,7 @@ public class App {
                 switch (args[i]) {
                     case "--order" -> {
                         if (i + 1 < args.length) {
-                            order = args[i++];
+                            order = args[++i];
                         } else {
                             System.err.println("Error: Missing argument for --order");
                             return;
@@ -75,7 +75,7 @@ public class App {
                     case "--repetitions" -> {
                         if (i + 1 < args.length) {
                             try {
-                                repetitions = Integer.parseInt(args[i++]);
+                                repetitions = Integer.parseInt(args[++i]);
                             } catch (NumberFormatException e) {
                                 System.err.println("Error: WRONG NUMBER FOOL");
                                 return;
@@ -168,7 +168,7 @@ public class App {
         }
         int sum = correct + incorrect;
         float percent = ((float)correct/(float)sum)*100;
-        System.out.println("Zuv hariuls: "+correct+" Buruu hariulsan: "+incorrect);
+        System.out.println("Zuv hariulsan: "+correct+" Buruu hariulsan: "+incorrect);
         if(percent<85){
             System.out.println(percent+"% hangaltgui baina");
         }
