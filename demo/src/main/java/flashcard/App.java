@@ -39,8 +39,44 @@ public class App {
     public static void main(String[] args) {
         Scanner mainScanner = new Scanner(System.in);
 
-        if (args.length == 0 || args[0].equals("--help")) {
-            System.out.println(HELP_MESSAGE);
+        String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
+        String order = "random";
+        int repetitions = 1;
+        boolean invertCards = false;
+
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "--help" -> {
+                    System.out.println(HELP_MESSAGE);
+                    return;
+                }
+                case "--order" -> {
+                    if (i + 1 <= args.length) {
+                        order = args[++i];
+                    } else {
+                        System.err.println("Error: Missing argument for --order");
+                        return;
+                    }
+                }
+                case "--repetitions" -> {
+                    if (i + 1 < args.length) {
+                        try {
+                            repetitions = Integer.parseInt(args[++i]);
+                        } catch (NumberFormatException e) {
+                            System.err.println("Error: WRONG NUMBER FOOL");
+                            return;
+                        }
+                    }
+                }
+                case "--invertCards" -> {
+                    invertCards = true;
+
+                }
+                default -> {
+                    System.err.println("Error: Evdelchleeshdee " + args[i]);
+                }
+
+            }
         }
 
         while (true) {
@@ -55,42 +91,6 @@ public class App {
             if (!command.equals("start")) {
                 System.out.print("Medehgui command bainoo :)");
                 continue;
-            }
-
-            String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
-            String order = "random";
-            int repetitions = 1;
-            boolean invertCards = false;
-
-            for (int i = 1; i < args.length; i++) {
-                switch (args[i]) {
-                    case "--order" -> {
-                        if (i + 1 < args.length) {
-                            order = args[++i];
-                        } else {
-                            System.err.println("Error: Missing argument for --order");
-                            return;
-                        }
-                    }
-                    case "--repetitions" -> {
-                        if (i + 1 < args.length) {
-                            try {
-                                repetitions = Integer.parseInt(args[++i]);
-                            } catch (NumberFormatException e) {
-                                System.err.println("Error: WRONG NUMBER FOOL");
-                                return;
-                            }
-                        }
-                    }
-                    case "--invertCards" -> {
-                        invertCards = true;
-
-                    }
-                    default -> {
-                        System.err.println("Error: Evdelchleeshdee " + args[i]);
-                    }
-
-                }
             }
 
             List<Card> cards = loadCards(cardsFile);
@@ -153,6 +153,7 @@ public class App {
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Asuult: " + card.getQuestion());
+                System.out.println(card.getMistakeCounter());
                 System.out.print("Hariult: ");
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
@@ -167,13 +168,12 @@ public class App {
             }
         }
         int sum = correct + incorrect;
-        float percent = ((float)correct/(float)sum)*100;
-        System.out.println("Zuv hariulsan: "+correct+" Buruu hariulsan: "+incorrect);
-        if(percent<85){
-            System.out.println(percent+"% hangaltgui baina");
-        }
-        else{
-            System.out.println("woow "+percent+"% sain baina");
+        float percent = ((float) correct / (float) sum) * 100;
+        System.out.println("Zuv hariulsan: " + correct + " Buruu hariulsan: " + incorrect);
+        if (percent < 85) {
+            System.out.println(percent + "% hangaltgui baina");
+        } else {
+            System.out.println("woow " + percent + "% sain baina");
         }
     }
 
