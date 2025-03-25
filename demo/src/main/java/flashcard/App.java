@@ -13,11 +13,11 @@ import flashcard.Organizer.RecentMistakesFirst;
 
 //java -cp target/demo-1.0-SNAPSHOT.jar
 /**
- * TODO help menug yanzlah bolgoh
+ * 
  *
  */
 /**
- * Hello world!
+ * Flashcard main class
  *
  */
 public class App {
@@ -125,7 +125,9 @@ public class App {
 
         mainScanner.close();
     }
-
+    /**
+     * Asuultuudiig file aas unshih
+     */
     private static List<Card> loadCards(String filePath) {
         List<Card> cards = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File(filePath))) {
@@ -145,7 +147,13 @@ public class App {
         return cards;
 
     }
-
+    /**
+     * Togloomiig ehluulj asuultuudiig terminald hevleh
+     * @param cards
+     * @param repetitions
+     * @param scanner
+     * 
+     */
     @SuppressWarnings("ConvertToTryWithResources")
     private static void startFlashCard(List<Card> cards, int repetitions, Scanner scanner) {
         int correct = 0;
