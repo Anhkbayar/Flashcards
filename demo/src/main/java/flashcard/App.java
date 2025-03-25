@@ -148,6 +148,8 @@ public class App {
 
     @SuppressWarnings("ConvertToTryWithResources")
     private static void startFlashCard(List<Card> cards, int repetitions, Scanner scanner) {
+        int correct = 0;
+        int incorrect = 0;
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Asuult: " + card.getQuestion());
@@ -155,12 +157,23 @@ public class App {
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
                     System.out.println(ANSI_GREEN + "Zuv hariult" + ANSI_RESET);
+                    correct++;
                 } else {
                     System.out.println(ANSI_RED + "Buruu hariult. Zuv hariult ni: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
                     );
                     card.mistakeAdder();
+                    incorrect++;
                 }
             }
+        }
+        int sum = correct + incorrect;
+        float percent = ((float)correct/(float)sum)*100;
+        System.out.println("Zuv hariuls: "+correct+" Buruu hariulsan: "+incorrect);
+        if(percent<85){
+            System.out.println(percent+"% hangaltgui baina");
+        }
+        else{
+            System.out.println("woow "+percent+"% sain baina");
         }
     }
 
