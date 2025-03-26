@@ -13,7 +13,7 @@ import flashcard.Organizer.RecentMistakesFirst;
 
 //java -cp target/demo-1.0-SNAPSHOT.jar
 /**
- * 
+ * GGEZ
  *
  */
 /**
@@ -161,7 +161,6 @@ public class App {
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Asuult: " + card.getQuestion());
-                System.out.println(card.getMistakeCounter());
                 System.out.print("Hariult: ");
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {

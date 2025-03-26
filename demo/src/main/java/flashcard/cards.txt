@@ -1,8 +1,8 @@
 What is the capital of France?: Paris
 What is 2 + 2?: 4
-What does 'CPU' stand for?: Central processing unit
+What does 'CPU' stand for?: central processing unit
 Which data structure uses the Last In, First Out (LIFO) principle?: Stack
-Which database language is used to manage relational databases?: SQL
-What does 'SSD' stand for in computer storage?: Solid State Drive
-What does 'DNS' stand for?: Domain Name System
-What does 'IP' stand for in networking?: Internet Protocol
+Which database language is used to manage relational databases?: sql
+What does 'SSD' stand for in computer storage?: solid state drive
+What does 'DNS' stand for?: domain name system
+What does 'IP' stand for in networking?: internet protocol
