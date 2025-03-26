@@ -34,7 +34,9 @@ public class App {
               --repetitions <num>         Number of repetitions per card
               --invertCards               Invert question and answer
             """;
-
+    private static final String START_MESSAGE = """
+            Hervee tohirgoog uurchilhiig husvel --help gej bichin tuslamj avna uu 
+            """;
     @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
         Scanner mainScanner = new Scanner(System.in);
@@ -44,42 +46,49 @@ public class App {
         int repetitions = 1;
         boolean invertCards = false;
 
-        for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
-                case "--help" -> {
-                    System.out.println(HELP_MESSAGE);
-                    return;
-                }
-                case "--order" -> {
-                    if (i + 1 <= args.length) {
-                        order = args[++i];
-                    } else {
-                        System.err.println("Error: Missing argument for --order");
-                        return;
+        while (true) {
+            System.out.println(START_MESSAGE);
+            String input = mainScanner.nextLine();
+            String[] settings = input.split(" ");
+            for (int i = 0; i < settings.length; i++) {
+                switch (settings[i]) {
+                    case "--help" -> {
+                        System.out.println(HELP_MESSAGE);
+                        continue;
                     }
-                }
-                case "--repetitions" -> {
-                    if (i + 1 < args.length) {
-                        try {
-                            repetitions = Integer.parseInt(args[++i]);
-                        } catch (NumberFormatException e) {
-                            System.err.println("Error: WRONG NUMBER FOOL");
+                    case ""->{
+                        continue;
+                    }
+                    case "--order" -> {
+                        if (i + 1 <= settings.length) {
+                            order = settings[++i];
+                        } else {
+                            System.err.println("Error: Missing argument for --order");
                             return;
                         }
                     }
-                }
-                case "--invertCards" -> {
-                    invertCards = true;
+                    case "--repetitions" -> {
+                        if (i + 1 < settings.length) {
+                            try {
+                                repetitions = Integer.parseInt(settings[++i]);
+                            } catch (NumberFormatException e) {
+                                System.err.println("Error: WRONG NUMBER FOOL");
+                                return;
+                            }
+                        }
+                    }
+                    case "--invertCards" -> {
+                        invertCards = true;
+
+                    }
+                    default -> {
+                        System.err.println("Error: " + settings[i]);
+                        System.out.println("--help gej bicheed tohirgoog harna uu");
+                    }
 
                 }
-                default -> {
-                    System.err.println("Error: Evdelchleeshdee " + args[i]);
-                }
-
             }
-        }
 
-        while (true) {
             System.out.println("\nType 'start' to begin flashcards or 'quit' to exit");
             String command = mainScanner.nextLine().trim().toLowerCase();
 
@@ -125,6 +134,7 @@ public class App {
 
         mainScanner.close();
     }
+
     /**
      * Asuultuudiig file aas unshih
      */
@@ -147,12 +157,14 @@ public class App {
         return cards;
 
     }
+
     /**
      * Togloomiig ehluulj asuultuudiig terminald hevleh
+     *
      * @param cards
      * @param repetitions
      * @param scanner
-     * 
+     *
      */
     @SuppressWarnings("ConvertToTryWithResources")
     private static void startFlashCard(List<Card> cards, int repetitions, Scanner scanner) {
