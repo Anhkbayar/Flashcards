@@ -11,7 +11,7 @@ import flashcard.Organizer.CardOrganizer;
 import flashcard.Organizer.RandomOrganizer;
 import flashcard.Organizer.RecentMistakesFirst;
 
-//java -cp target/demo-1.0-SNAPSHOT.jar
+//java -cp target/demo-1.0-SNAPSHOT.jar flashcard.App
 /**
  * GGEZ
  *
@@ -35,7 +35,7 @@ public class App {
               --invertCards               Invert question and answer
             """;
     private static final String START_MESSAGE = """
-            Hervee tohirgoog uurchilhiig husvel --help gej bichin tuslamj avna uu 
+            If you need help with the settings type --help
             """;
     @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
@@ -48,6 +48,8 @@ public class App {
 
         while (true) {
             System.out.println(START_MESSAGE);
+            System.out.println("Default is --order "+order+" --repetitions "+repetitions+" --invertCards " +invertCards);
+            System.out.println("Press enter to continue");
             String input = mainScanner.nextLine();
             String[] settings = input.split(" ");
             for (int i = 0; i < settings.length; i++) {
@@ -172,14 +174,14 @@ public class App {
         int incorrect = 0;
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
-                System.out.println("Asuult: " + card.getQuestion());
-                System.out.print("Hariult: ");
+                System.out.println("Question: " + card.getQuestion());
+                System.out.print("Answer: ");
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
-                    System.out.println(ANSI_GREEN + "Zuv hariult" + ANSI_RESET);
+                    System.out.println(ANSI_GREEN + "Correct" + ANSI_RESET);
                     correct++;
                 } else {
-                    System.out.println(ANSI_RED + "Buruu hariult. Zuv hariult ni: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
+                    System.out.println(ANSI_RED + "Incorrect.Correct answer is: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
                     );
                     card.mistakeAdder();
                     incorrect++;
@@ -188,11 +190,11 @@ public class App {
         }
         int sum = correct + incorrect;
         float percent = ((float) correct / (float) sum) * 100;
-        System.out.println("Zuv hariulsan: " + correct + " Buruu hariulsan: " + incorrect);
+        System.out.println("Correct: " + correct + " Incorrect: " + incorrect);
         if (percent < 85) {
-            System.out.println(percent + "% hangaltgui baina");
+            System.out.println(percent + "% not enough.Try again");
         } else {
-            System.out.println("woow " + percent + "% sain baina");
+            System.out.println("woow " + percent + "% Good JOB");
         }
     }
 
