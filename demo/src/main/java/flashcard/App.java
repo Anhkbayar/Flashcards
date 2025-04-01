@@ -9,7 +9,7 @@ import java.util.Scanner;
 import flashcard.Edits.Card;
 import flashcard.Organizer.CardOrganizer;
 import flashcard.Organizer.RandomOrganizer;
-import flashcard.Organizer.RecentMistakesFirst;
+import flashcard.Organizer.WorstFirst;
 
 //java -cp target/demo-1.0-SNAPSHOT.jar flashcard.App
 /**
@@ -119,8 +119,8 @@ public class App {
                 case "random" -> {
                     organizer = new RandomOrganizer();
                 }
-                case "recent-mistakes-first" -> {
-                    organizer = new RecentMistakesFirst();
+                case "worst-first" -> {
+                    organizer = new WorstFirst();
                 }
                 default -> {
                     System.err.println("Error: Iiim daraalal baihgueeee");
