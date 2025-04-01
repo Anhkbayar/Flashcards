@@ -1,7 +1,7 @@
 package flashcard;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,39 +26,50 @@ public class App {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[37m";
     public static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String HELP_MESSAGE = """
-            Usage: flashcard <cards-file> [options]
+    private static final String HELP_MESSAGE = ANSI_YELLOW + """
+            Usage: <cards-file> [options]
             Options:
               --help                      Show help message
               --order <order>             Set card order (random, worst-first, recent-mistakes-first)
               --repetitions <num>         Number of repetitions per card
               --invertCards               Invert question and answer
-            """;
+            """ + ANSI_RESET;
     private static final String START_MESSAGE = """
-            If you need help with the settings type --help
-            """;
+            If you need help with the settings type --help""";
+
     @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
         Scanner mainScanner = new Scanner(System.in);
 
-        String cardsFile = "G:\\Semester4\\Buteelt\\Flashcards\\demo\\src\\main\\java\\flashcard\\cards.txt";
+        String cardsFile = "cards.txt";
         String order = "random";
         int repetitions = 1;
         boolean invertCards = false;
 
+        List<Card> cards = loadCards(cardsFile);
+            if (cards == null) {
+                return;
+            }
+
         while (true) {
             System.out.println(START_MESSAGE);
-            System.out.println("Default is --order "+order+" --repetitions "+repetitions+" --invertCards " +invertCards);
-            System.out.println("Press enter to continue");
+            System.out.println("Default is --order " + order + " --repetitions " + repetitions + " --invertCards " + invertCards);
+            System.out.println("Press enter to continue or change the setting here:");
             String input = mainScanner.nextLine();
             String[] settings = input.split(" ");
+
+            boolean showHelp = false;
+
+            
+
             for (int i = 0; i < settings.length; i++) {
                 switch (settings[i]) {
                     case "--help" -> {
                         System.out.println(HELP_MESSAGE);
-                        continue;
+                        showHelp = true;
+                        break;
                     }
-                    case ""->{
+                    case "" -> {
                         continue;
                     }
                     case "--order" -> {
@@ -85,29 +96,16 @@ public class App {
                     }
                     default -> {
                         System.err.println("Error: " + settings[i]);
-                        System.out.println("--help gej bicheed tohirgoog harna uu");
+                        System.out.println("Type --help to see the options");
                     }
 
                 }
             }
 
-            System.out.println("\nType 'start' to begin flashcards or 'quit' to exit");
-            String command = mainScanner.nextLine().trim().toLowerCase();
-
-            if (command.equals("quit")) {
-                System.out.print("Exiting.......");
-                mainScanner.close();
-                break;
-            }
-            if (!command.equals("start")) {
-                System.out.print("Medehgui command bainoo :)");
+            if (showHelp) {
                 continue;
             }
 
-            List<Card> cards = loadCards(cardsFile);
-            if (cards == null) {
-                return;
-            }
 
             if (invertCards) {
                 for (Card card : cards) {
@@ -128,6 +126,18 @@ public class App {
                     System.err.println("Error: Iiim daraalal baihgueeee");
                 }
             }
+            System.out.println("\nType 'start' to begin flashcards or 'quit' to exit");
+            String command = mainScanner.nextLine().trim().toLowerCase();
+
+            if (command.equals("quit")) {
+                System.out.print("Exiting.......");
+                mainScanner.close();
+                break;
+            }
+            if (!command.equals("start")) {
+                System.out.print("Medehgui command bainoo :)");
+                continue;
+            }
 
             cards = organizer.organize(cards);
 
@@ -142,17 +152,28 @@ public class App {
      */
     private static List<Card> loadCards(String filePath) {
         List<Card> cards = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(filePath))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    cards.add(new Card(parts[0].trim(), parts[1].trim()));
-                }
 
+        if (!filePath.startsWith("/")) {
+            filePath = "/" + filePath;
+        }
+
+        try (InputStream inputStream = App.class.getResourceAsStream(filePath)) {
+            if (inputStream == null) {
+                System.err.println("Error: Could not find resource file: " + filePath);
+                return null;
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Error: File oldsongue :( " + filePath);
+
+            try (Scanner scanner = new Scanner(inputStream)) {
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    String[] parts = line.split(":");
+                    if (parts.length == 2) {
+                        cards.add(new Card(parts[0].trim(), parts[1].trim()));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
             return null;
         }
 
@@ -176,6 +197,7 @@ public class App {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Question: " + card.getQuestion());
                 System.out.print("Answer: ");
+                System.out.print("Mistakes: "+card.getMistakeCounter());
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
                     System.out.println(ANSI_GREEN + "Correct" + ANSI_RESET);
