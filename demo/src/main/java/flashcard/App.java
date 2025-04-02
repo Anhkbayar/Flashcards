@@ -202,7 +202,6 @@ public class App {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Question: " + card.getQuestion());
                 System.out.print("Answer: ");
-                System.out.print("Mistakes: "+card.getMistakeCounter());
                 String answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase(card.getAnswer())) {
                     System.out.println(ANSI_GREEN + "Correct" + ANSI_RESET);

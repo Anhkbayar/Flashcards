@@ -78,26 +78,26 @@
           <version>3.0.0</version>
         </plugin>
         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.5.0</version>
-            <executions>
-                <execution>
-                    <id>run-app</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>exec</goal>
-                    </goals>
-                    <configuration>
-                        <executable>java</executable>
-                        <arguments>
-                            <argument>-cp</argument>
-                            <argument>target/demo-1.0-SNAPSHOT.jar</argument>
-                            <argument>flashcard.App</argument>
-                        </arguments>
-                    </configuration>
-                </execution>
-            </executions>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.5.0</version>
+          <executions>
+            <execution>
+              <id>run-app</id>
+              <phase>package</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>java</executable>
+                  <arguments>
+                  <argument>-cp</argument>
+                  <argument>target/demo-1.0-SNAPSHOT.jar</argument>
+                  <argument>flashcard.App</argument>
+                  </arguments>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
