@@ -9,6 +9,7 @@ import java.util.Scanner;
 import flashcard.Edits.Card;
 import flashcard.Organizer.CardOrganizer;
 import flashcard.Organizer.RandomOrganizer;
+import flashcard.Organizer.RecentMistakesFirst;
 import flashcard.Organizer.WorstFirst;
 
 //java -cp target/demo-1.0-SNAPSHOT.jar flashcard.App
@@ -122,6 +123,9 @@ public class App {
                 case "worst-first" -> {
                     organizer = new WorstFirst();
                 }
+                case "recent-mistakes-first"->{
+                    organizer = new RecentMistakesFirst();
+                }
                 default -> {
                     System.err.println("Error: Iiim daraalal baihgueeee");
                 }
@@ -193,6 +197,7 @@ public class App {
     private static void startFlashCard(List<Card> cards, int repetitions, Scanner scanner) {
         int correct = 0;
         int incorrect = 0;
+        int mistakeOrder = 0;
         for (Card card : cards) {
             for (int i = 0; i < repetitions; i++) {
                 System.out.println("Question: " + card.getQuestion());
@@ -205,7 +210,7 @@ public class App {
                 } else {
                     System.out.println(ANSI_RED + "Incorrect.Correct answer is: " + ANSI_YELLOW + card.getAnswer() + ANSI_RESET
                     );
-                    card.mistakeAdder();
+                    card.mistakeAdder(mistakeOrder++);
                     incorrect++;
                 }
             }
