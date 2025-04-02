@@ -163,7 +163,7 @@ public class App {
 
         try (InputStream inputStream = App.class.getResourceAsStream(filePath)) {
             if (inputStream == null) {
-                System.err.println("Error: Could not find resource file: " + filePath);
+                System.err.println("Error: Fileiig ni olsongue :( " + filePath);
                 return null;
             }
 
